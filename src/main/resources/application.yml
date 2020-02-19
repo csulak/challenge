@@ -1,0 +1,30 @@
+name: moba-api-integrator
+
+server:
+  port: 8080
+  servlet.context-path: /challenge
+
+management:
+  health.defaults.enabled: false
+  endpoints:
+    web:
+      exposure:
+        include: info,metrics,health
+
+spring.jackson.property-naming-strategy: SNAKE_CASE
+
+management.info.git.mode: full
+
+spring:
+  jpa:
+    show-sql: false
+    open-in-view: true
+    properties:
+      hibernate:
+        dialect: nl.topicus.hibernate.dialect.CloudSpannerDialect
+        temp.use_jdbc_metadata_defaults: false
+
+swagger:
+  api:
+    version: 1.0.0
+

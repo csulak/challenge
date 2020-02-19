@@ -1,0 +1,44 @@
+env: qa
+
+
+# Fixer
+fixer:
+  baseUrl: http://data.fixer.io
+  key: 32dcecc71324943b43693a4523ade931
+
+
+# Ip Info
+ipInfo:
+  baseUrl: https://api.ip2country.info/
+
+# Country Info
+countryInfo:
+  baseUrl: https://restcountries.eu
+
+
+redis:
+  host: localhost
+  port: 6379
+  expiration: 300
+
+
+
+
+#Logging
+logging.description: true
+
+spring.datasource.url: jdbc:mysql://localhost:3306/challenge_db
+spring.datasource.username: root
+spring.datasource.password: 1234
+spring.datasource.testWhileIdle: true
+spring.datasource.validationQuery: SELECT 1
+spring.jpa.show-sql: true
+spring.jpa.hibernate.ddl-auto: update
+spring.jpa.hibernate.naming-strategy: org.hibernate.cfg.ImprovedNamingStrategy
+spring.jpa.properties.hibernate.dialect: org.hibernate.dialect.MySQL57Dialect
+#org.hibernate.dialect.MySQL5Dialect
+#org.hibernate.dialect.MySQL55Dialect
+#org.hibernate.dialect.MySQL5InnoDBDialect
+spring.datasource.driver-class-name: com.mysql.jdbc.Driver
+#org.hibernate.dialect.MySQL5Dialect
+
