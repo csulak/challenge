@@ -25,19 +25,21 @@ dependencies {
 		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
 	}
 	implementation 'javax.xml.bind:jaxb-api:2.3.0'
-	
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa:2.1.8.RELEASE'
-
 	implementation group: 'mysql', name: 'mysql-connector-java', version: '5.1.44'
-
 	//runtime('com.Oracle:ojdbc7:12.1.0.2.0')
-
 	implementation 'org.springframework.boot:spring-boot-starter-data-redis:2.1.8.RELEASE'
 	implementation 'redis.clients:jedis:2.9.0'
-
-
-
 	implementation 'org.springframework.boot:spring-boot-starter-actuator:2.1.8.RELEASE'
+	
+	// Test
+	testImplementation 'org.springframework.boot:spring-boot-starter-test:2.1.8.RELEASE'
+	testRuntime 'org.junit.vintage:junit-vintage-engine:5.4.0'
+	testImplementation 'org.mockito:mockito-core:2.28.2'
+	testImplementation 'org.mockito:mockito-junit-jupiter:2.28.2'
+	testImplementation 'org.junit.jupiter:junit-jupiter-api:5.4.2'
+	testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.4.2'
+	testImplementation 'org.junit.platform:junit-platform-launcher:1.4.2'
 }
 
 test {
