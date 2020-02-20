@@ -1,7 +1,6 @@
 package meli.challenge.demo.model;
 
 import meli.challenge.demo.model.country.CountryCurrency;
-import meli.challenge.demo.model.country.Currency;
 import meli.challenge.demo.model.country.Language;
 
 import java.io.Serializable;
@@ -21,9 +20,6 @@ public class CountryInfoComplete implements Serializable {
     private double distanceBetweenBuenosAiresToThisCountryInKm;
     private List<CountryCurrency> countryCurrencies;
 
-    //   private List<Currency> currencies;
-
-   // private double exchangeRateInEuro;
 
     public CountryInfoComplete() {
     }

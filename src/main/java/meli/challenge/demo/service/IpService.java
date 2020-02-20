@@ -50,7 +50,6 @@ public class IpService {
         var ipInfo = ipInfoRestClient.ipInfo(ip);
         var countriesInfoMap = countryInfoRestClient.getAllCountriesInfoMap();
 
-        //ojo que esto pincha hermosamente, porque pincharia? con una ip fruta me imagino
         var countryInfo = countriesInfoMap.get(ipInfo.getCountryCode3());
 
         LocalDateTime localDateTimeInUTC = LocalDateTime.now();
@@ -60,7 +59,6 @@ public class IpService {
         var distanceBetweenBuenosAiresToThisCountryInKm = distanceCalculator.distance(countryInfo.getLatlng().get(0), countryInfo.getLatlng().get(1));
 
         var countryCurrencies = this.getCountryCurrencies(countryInfo.getCurrencies());
-
 
         CountryInfoComplete countryInfoComplete = new CountryInfoComplete(
                 ip,
@@ -73,17 +71,14 @@ public class IpService {
                 distanceBetweenBuenosAiresToThisCountryInKm,
                 countryCurrencies);
 
-
         // armamos el objeto a persistir
         var statistics = new Statistics(ip, distanceBetweenBuenosAiresToThisCountryInKm);
 
         //persistimos el objeto
         statisticsRepository.save(statistics);
 
-
-        // trae el objeto de redis y si no exista lo trae de sql
+        // obtengo el objeto de redis y si no existe lo trae de sql
         var statisticsToRedis = this.getStatisticsObject(countryInfoComplete.getDistanceBetweenBuenosAiresToThisCountryInKm());
-
 
         //guardo el objeto en redis
         this.addStatisticsObjectToRedis(statisticsToRedis.get());
@@ -96,11 +91,8 @@ public class IpService {
     private StatisticsDTO updateStatistics(StatisticsDTO statisticsToRedis, Double distanceBetweenBuenosAiresToThisCountryInKm) {
 
         var maxDistance =  statisticsToRedis.getMaxDistanceToBuenosAires() > distanceBetweenBuenosAiresToThisCountryInKm ? statisticsToRedis.getMaxDistanceToBuenosAires() : distanceBetweenBuenosAiresToThisCountryInKm;
-        // this.position = positionId != null ? new JobPosition(positionId) : null;
         var minDistance = statisticsToRedis.getMinDistanceToBuenosAires() < distanceBetweenBuenosAiresToThisCountryInKm ? statisticsToRedis.getMinDistanceToBuenosAires() : distanceBetweenBuenosAiresToThisCountryInKm;
-
         var sumDistances = statisticsToRedis.getAverage() * statisticsToRedis.getQuantity() + distanceBetweenBuenosAiresToThisCountryInKm;
-
         var quantity = statisticsToRedis.getQuantity() + 1;
 
         var average = sumDistances / quantity;
@@ -115,7 +107,7 @@ public class IpService {
         var exchangesRateInEuroComplete = currencyInfoRestClient.getCountryCodeExchangeRates().getRates();
         List<CountryCurrency> countryCurrencies = new ArrayList<>();
 
-        countryInfoCurrency.stream().forEach(currency ->
+        countryInfoCurrency.forEach(currency ->
                 countryCurrencies.add(new CountryCurrency(
                         currency.getCode(),
                         currency.getName(),
@@ -129,7 +121,6 @@ public class IpService {
     private List<LocalDateTime> setCurrentTimes(List<String> timeZones, LocalDateTime localDateTimeInUTC) {
         List<LocalDateTime> currentTimes = new ArrayList<>();
 
-
         var timeZonesWithouthUTC = timeZones.stream().map(s -> s.replace("UTC", "").replace(":00", "")).collect(Collectors.toList());
 
         var timeZonesParsedToLong = timeZonesWithouthUTC.stream().map(Long::parseLong).collect(Collectors.toList());
@@ -142,7 +133,7 @@ public class IpService {
     private void addStatisticsObjectToRedis(StatisticsDTO params) {
         try {
             ValueOperations<String, StatisticsDTO> opsForValue = redisTemplate.opsForValue();
-            opsForValue.set("STATISTICS_REDIS", params, 120, TimeUnit.SECONDS);
+            opsForValue.set("STATISTICS_REDIS", params, 900, TimeUnit.SECONDS);
         } catch (Exception e) {
         }
     }
@@ -162,7 +153,7 @@ public class IpService {
             else{
 
                 // aca actualizo los valores del objeto de redis. esto lo hago en el caso de que ya exista en redis
-                // porque los valores van a ser "viejos" por estar caacheados y no "nuevos" por ser traidos de sql
+                // porque los valores van a ser "viejos" por estar cacheados y no "nuevos" por ser traidos de sql
                 var statisticsUpdated = this.updateStatistics(params.get(), distanceBetweenBuenosAiresToThisCountryInKm);
                 params = Optional.of(statisticsUpdated);
 
@@ -186,7 +177,6 @@ public class IpService {
     }
 
 
-
     public Optional<StatisticsDTO> getStatisticsObjectByEndpoint() {
         try {
             ValueOperations<String, StatisticsDTO> opsForValue = redisTemplate.opsForValue();
@@ -203,7 +193,7 @@ public class IpService {
 
             return params;
         } catch (Exception e) {
-            return Optional.empty();
+            throw new RuntimeException("Error obteniendo statistics /", e);
         }
     }
 

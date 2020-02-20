@@ -6,7 +6,6 @@ import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import io.mikael.urlbuilder.UrlBuilder;
 import meli.challenge.demo.model.country.CountryCodeExchangeRates;
 import meli.challenge.demo.model.country.CountryCodes;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
@@ -27,9 +26,6 @@ public class CurrencyInfoRestClient {
 
     @Value("${fixer.key}")
     private String key;
-
-    @Autowired
-    private CurrencyInfoRestClient ipInfoRestClient;
 
     private HttpClient client;
     private ObjectMapper mapper = new ObjectMapper();
@@ -71,8 +67,7 @@ public class CurrencyInfoRestClient {
 
             return new ObjectMapper().readValue(response.body(), CountryCodes.class);
         } catch (Exception e) {
-            //log.error("Error obteniendo Bumex token /{}");
-            throw new RuntimeException("Error obteniendo la informacion de tods los paises /", e);
+            throw new RuntimeException("Error obteniendo todos los codigos de pais /", e);
         }
     }
 
@@ -87,7 +82,6 @@ public class CurrencyInfoRestClient {
         String path = "/api/latest";
 
         var allCountryCodesInString = this.getAllCountryCodes();
-
 
         URI uri = UrlBuilder.empty()
                 .fromString(baseUrl + path)
@@ -109,7 +103,7 @@ public class CurrencyInfoRestClient {
 
             return new ObjectMapper().readValue(response.body(), CountryCodeExchangeRates.class);
         } catch (Exception e) {
-            throw new RuntimeException("Error obteniendo la informacion de todos los paises /", e);
+            throw new RuntimeException("Error obteniendo la informacion de todos los cambios de moneda /", e);
         }
     }
 

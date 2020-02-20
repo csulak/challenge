@@ -13,6 +13,5 @@ public interface StatisticsRepository extends CrudRepository<Statistics, String>
 
     @Query(nativeQuery = true, value = "SELECT AVG(distance_to_buenos_aires) AS average, MIN(distance_to_buenos_aires) AS min, MAX(distance_to_buenos_aires) AS max, count(*) AS quantity FROM statistics")
     List<Map<String, ?>> averageDistanceToBuenosAires();
-    //List<Double> averageDistanceToBuenosAires();
 
 }

@@ -1,10 +1,5 @@
 package meli.challenge.demo.config;
 
-import java.util.Arrays;
-import java.util.Date;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CacheEvict;
@@ -20,20 +15,20 @@ import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
 import org.springframework.data.redis.connection.jedis.JedisClientConfiguration;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
-
-import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import redis.clients.jedis.JedisPoolConfig;
 
+import java.util.Arrays;
+import java.util.Date;
+
 @Configuration
 @EnableCaching
 @EnableScheduling
 public class CacheConfig {
-   // private final static Logger log = LoggerFactory.getLogger(CacheConfig.class);
 
-    private static final int TTL_IN_MINUTES = 60;
+    private static final int TTL_IN_MINUTES = 5;
 
     @Value("${redis.host}")
     private String redisHost;

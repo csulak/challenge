@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import io.mikael.urlbuilder.UrlBuilder;
 import meli.challenge.demo.model.country.Country;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
@@ -27,9 +26,6 @@ public class CountryInfoRestClient {
     @Value("${countryInfo.baseUrl}")
     private String baseUrl;
 
-    @Autowired
-    private CountryInfoRestClient ipInfoRestClient;
-
     private HttpClient client;
     private ObjectMapper mapper = new ObjectMapper();
 
@@ -40,40 +36,6 @@ public class CountryInfoRestClient {
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         mapper.setPropertyNamingStrategy(PropertyNamingStrategy.SNAKE_CASE);
     }
-
-    /**
-     * return the countries information list
-     *
-     * @return List<Country>
-     */
-
-    /*
-    @Cacheable("countries-info-cache")
-    public List<Country> getAllCountriesInfo() {
-        var baseURL = "https://restcountries.eu/rest/v2/all";
-        URI uri = UrlBuilder.empty()
-                .fromString(baseURL)
-                .toUri();
-
-        try {
-            var request = HttpRequest.newBuilder(uri)
-                    .timeout(Duration.of(10, ChronoUnit.SECONDS))
-                    .GET()
-                    .build();
-
-            var response = client.send(request, BodyHandlers.ofString());
-
-            if (response.statusCode() != 200) {
-                throw new Exception("Respuesta invalida - response code " + response.statusCode());
-            }
-
-            return Arrays.asList(mapper.readValue(response.body(), Country[].class));
-        } catch (Exception e) {
-            //log.error("Error obteniendo Bumex token /{}");
-            throw new RuntimeException("Error obteniendo la informacion de tods los paises /", e);
-        }
-    }
-*/
 
     /**
      * return the countries information in a map
@@ -109,8 +71,7 @@ public class CountryInfoRestClient {
 
             return countriesInfoMap;
         } catch (Exception e) {
-            //log.error("Error obteniendo Bumex token /{}");
-            throw new RuntimeException("Error obteniendo la informacion de tods los paises /", e);
+            throw new RuntimeException("Error obteniendo la informacion de todos los paises /", e);
         }
     }
 

@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import io.mikael.urlbuilder.UrlBuilder;
 import meli.challenge.demo.model.IpInfoDTO;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -22,9 +21,6 @@ public class IpInfoRestClient {
 
     @Value("${ipInfo.baseUrl}")
     private String baseUrl;
-
-    @Autowired
-    private IpInfoRestClient ipInfoRestClient;
 
     private HttpClient client;
     private ObjectMapper mapper = new ObjectMapper();
@@ -62,7 +58,7 @@ public class IpInfoRestClient {
 
             return new ObjectMapper().readValue(response.body(), IpInfoDTO.class);
         } catch (Exception e) {
-            throw new RuntimeException("Error obteniendo info de la ip /" , e);
+            throw new RuntimeException("Error obteniendo info de la ip /" + ip , e);
         }
     }
 

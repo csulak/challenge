@@ -44,9 +44,7 @@ public class Country implements Serializable {
 
     private List<Currency> currencies;
     private List<Language> languages;
-    //private String name;
     private String flag;
-    //private String name;
     private String cioc;
 
 

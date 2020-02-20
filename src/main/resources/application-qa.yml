@@ -22,8 +22,6 @@ redis:
   expiration: 300
 
 
-
-
 #Logging
 logging.description: true
 
