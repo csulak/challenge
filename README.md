@@ -66,3 +66,15 @@ La cache en memoria se "limpia" cada 5 minutos
 
 Se cachea en redis la informacion retornada en el endpoint "GET statistics". Si en el primer intento no lo encuentra en Redis lo busca en base para luego almacernarlo en Redis.
 La cache de Redis se "limpia" cada 15 minutos.
+
+**Setear entorno**
+En intellij
+
+Add new configurations
+Elegir Application
+
+Main class: meli.challenge.demo.DemoApplication
+VM options: -Dspring.profiles.active=qa
+Program Arguments: --stacktrace
+Use classpath or Module: demo.main
+JRE: 13
