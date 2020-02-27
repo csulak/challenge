@@ -23,23 +23,23 @@ public class IpController {
     }
 
     @ApiOperation(value = "Limpia todas las caches de memoria")
-    @RequestMapping(value = "/internal/clearCache", method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value = "/internal/clearMemoryCache", method = RequestMethod.GET, produces = "application/json")
     public Boolean clearCache() {
         return true;
     }
 
+
+    @ApiOperation(value = "Retorna las estadisticas")
+    @RequestMapping(value = "/statistics", method = RequestMethod.GET, produces = "application/json")
+    public StatisticsDTO getStatistics() {
+        return ipService.getStatisticsObjectByEndpoint().orElse(null);
+    }
 
     @ApiOperation(value = "Returns the country info complete for an specific IP")
     @RequestMapping(value = "/country/info", method = RequestMethod.POST, produces = "application/json")
     @ResponseBody
     public CountryInfoComplete countryInfoComplete(@RequestParam String ip) {
         return ipService.countryInfoComplete(ip);
-    }
-
-    @ApiOperation(value = "Retorna la info de redis")
-    @RequestMapping(value = "/statistics", method = RequestMethod.GET, produces = "application/json")
-    public StatisticsDTO getStatistics() {
-        return ipService.getStatisticsObjectByEndpoint().orElse(null);
     }
 
 

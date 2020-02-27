@@ -88,8 +88,7 @@ public class CacheConfig {
     @CacheEvict(allEntries = true, value = {"countries-info-cache"})
     @Scheduled(fixedDelay = TTL_IN_MINUTES * 60 * 1000 ,  initialDelay = 500)
     public void reportCacheEvict() {
-       // log.info("Flush Cache " + new Date());
-        System.out.println("Flush Cache " + new Date());
+        System.out.println("Flush Memory Cache " + new Date());
     }
 
 }

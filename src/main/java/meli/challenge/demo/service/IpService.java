@@ -83,22 +83,7 @@ public class IpService {
         //guardo el objeto en redis
         this.addStatisticsObjectToRedis(statisticsToRedis.get());
 
-
-
         return countryInfoComplete;
-    }
-
-    private StatisticsDTO updateStatistics(StatisticsDTO statisticsToRedis, Double distanceBetweenBuenosAiresToThisCountryInKm) {
-
-        var maxDistance =  statisticsToRedis.getMaxDistanceToBuenosAires() > distanceBetweenBuenosAiresToThisCountryInKm ? statisticsToRedis.getMaxDistanceToBuenosAires() : distanceBetweenBuenosAiresToThisCountryInKm;
-        var minDistance = statisticsToRedis.getMinDistanceToBuenosAires() < distanceBetweenBuenosAiresToThisCountryInKm ? statisticsToRedis.getMinDistanceToBuenosAires() : distanceBetweenBuenosAiresToThisCountryInKm;
-        var sumDistances = statisticsToRedis.getAverage() * statisticsToRedis.getQuantity() + distanceBetweenBuenosAiresToThisCountryInKm;
-        var quantity = statisticsToRedis.getQuantity() + 1;
-
-        var average = sumDistances / quantity;
-
-        return new StatisticsDTO(average, maxDistance, minDistance, quantity);
-
     }
 
 
@@ -143,7 +128,7 @@ public class IpService {
         try {
             ValueOperations<String, StatisticsDTO> opsForValue = redisTemplate.opsForValue();
             Optional<StatisticsDTO> params = Optional.ofNullable(opsForValue.get("STATISTICS_REDIS"));
-            if (params.isEmpty()) {
+            if (params.isEmpty() || params.get().getMaxDistanceToBuenosAires() == null) {
 
                 params = Optional.ofNullable(statisticsRepository.averageDistanceToBuenosAires().stream()
                         .map(this::convertToItem)
@@ -163,6 +148,18 @@ public class IpService {
         } catch (Exception e) {
             return Optional.empty();
         }
+    }
+
+    private StatisticsDTO updateStatistics(StatisticsDTO statisticsToRedis, Double distanceBetweenBuenosAiresToThisCountryInKm) {
+
+        var maxDistance = statisticsToRedis.getMaxDistanceToBuenosAires() > distanceBetweenBuenosAiresToThisCountryInKm ? statisticsToRedis.getMaxDistanceToBuenosAires() : distanceBetweenBuenosAiresToThisCountryInKm;
+        var minDistance = statisticsToRedis.getMinDistanceToBuenosAires() < distanceBetweenBuenosAiresToThisCountryInKm ? statisticsToRedis.getMinDistanceToBuenosAires() : distanceBetweenBuenosAiresToThisCountryInKm;
+        var sumDistances = statisticsToRedis.getAverage() * statisticsToRedis.getQuantity() + distanceBetweenBuenosAiresToThisCountryInKm;
+        var quantity = statisticsToRedis.getQuantity() + 1;
+
+        var average = sumDistances / quantity;
+        return new StatisticsDTO(average, maxDistance, minDistance, quantity);
+
     }
 
 
