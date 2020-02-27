@@ -10,6 +10,7 @@ import meli.challenge.demo.rest.CountryInfoRestClient;
 import meli.challenge.demo.rest.CurrencyInfoRestClient;
 import meli.challenge.demo.rest.IpInfoRestClient;
 import meli.challenge.demo.utils.DistanceCalculator;
+import meli.challenge.demo.utils.ValidateIpAddress;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
@@ -34,9 +35,6 @@ public class IpService {
     IpInfoRestClient ipInfoRestClient;
 
     @Autowired
-    DistanceCalculator distanceCalculator;
-
-    @Autowired
     CurrencyInfoRestClient currencyInfoRestClient;
 
     @Autowired
@@ -47,6 +45,10 @@ public class IpService {
 
     public CountryInfoComplete countryInfoComplete(String ip) {
 
+        if(!ValidateIpAddress.validateIPAddress(ip)){
+            throw new RuntimeException("La ip ingresada no posee el patron 'XXX.XXX.XXX.XXX' ");
+        }
+
         var ipInfo = ipInfoRestClient.ipInfo(ip);
         var countriesInfoMap = countryInfoRestClient.getAllCountriesInfoMap();
 
@@ -56,7 +58,7 @@ public class IpService {
 
         var currentTimes = this.setCurrentTimes(countryInfo.getTimezones(), localDateTimeInUTC);
 
-        var distanceBetweenBuenosAiresToThisCountryInKm = distanceCalculator.distance(countryInfo.getLatlng().get(0), countryInfo.getLatlng().get(1));
+        var distanceBetweenBuenosAiresToThisCountryInKm = DistanceCalculator.distance(countryInfo.getLatlng().get(0), countryInfo.getLatlng().get(1));
 
         var countryCurrencies = this.getCountryCurrencies(countryInfo.getCurrencies());
 

@@ -1,15 +1,11 @@
 package meli.challenge.demo.utils;
 
-import org.springframework.stereotype.Service;
-
-
-@Service
 public class DistanceCalculator {
 
     private static final double LAT_BS_AS = -34;
     private static final double LON_BS_AS = -64;
 
-    public double distance(double lat2, double lon2) {
+    public static double distance(double lat2, double lon2) {
         if ((LAT_BS_AS == lat2) && (LON_BS_AS == lon2)) {
             return 0;
         } else {
