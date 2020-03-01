@@ -68,13 +68,14 @@ Se cachea en redis la informacion retornada en el endpoint "GET statistics". Si 
 La cache de Redis se "limpia" cada 15 minutos.
 
 **Setear entorno**
+
 En intellij
 
-Add new configurations
+-Add new configurations
+
 Elegir Application
 
-Main class: meli.challenge.demo.DemoApplication
-VM options: -Dspring.profiles.active=qa
-Program Arguments: --stacktrace
-Use classpath or Module: demo.main
-JRE: 13
+-Main class: meli.challenge.demo.DemoApplication
+-Program Arguments: --stacktrace
+-Use classpath or Module: demo.main
+-JRE: 13
