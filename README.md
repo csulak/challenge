@@ -81,11 +81,11 @@ La cache de Redis se "limpia" cada 15 minutos.
 
 En intellij
 
--Add new configurations
+- Add new configurations
 
-Elegir Application
+ Elegir Application
 
--Main class: meli.challenge.demo.DemoApplication
--Program Arguments: --stacktrace
--Use classpath or Module: demo.main
--JRE: 13
+- Main class: meli.challenge.demo.DemoApplication
+- Program Arguments: --stacktrace
+- Use classpath or Module: demo.main
+- JRE: 13
