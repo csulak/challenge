@@ -4,6 +4,7 @@
 Contenido:
 
 - [Enunciado](#enunciado)
+- [Correr Proyecto](#correr-proyecto)
 - [Swagger Endpoints](#swagger-endpoints)
 - [Desarrollo](#desarrollo)
 - [Setear entorno](#setear-entorno)
@@ -54,6 +55,19 @@ Moneda: EUR (1 EUR = 1.0631 U$S)
 Hora: 20:01:23 (UTC) o 21:01:23 (UTC+01:00)
 Distancia estimada: 10270 kms (-34, -64) a (40, -4)
 
+
+## Correr Proyecto
+
+Se debe tener instalado gradle y docker (docker-compose)
+
+- clonar proyecto
+- Ejecutar la sentencia "gradle clean build"
+- Luego "docker-compose build"
+- finalmente "docker-compose up"
+
+pd. en caso de querer "bajar" el proyecto -> "docker-compose down"
+
+
 ## Swagger Endpoints
 
 [Swagger](http://localhost:8080/challenge/swagger-ui.html#/)
@@ -76,6 +90,12 @@ La cache en memoria se "limpia" cada 5 minutos
 
 Se cachea en redis la informacion retornada en el endpoint "GET statistics". Si en el primer intento no lo encuentra en Redis lo busca en base para luego almacernarlo en Redis.
 La cache de Redis se "limpia" cada 15 minutos.
+
+Cada vez que el proyecto se "levanta" el proyecto. Se crea y borra la tabla de SQL persistida
+
+Puertos usados: 8080 (Proyecto), 6379 (Redis), 3306(MySQL)
+
+las configuracion de puertos y propias del proyecto se encuentran en el application.yml
 
 ## Setear Entorno
 
