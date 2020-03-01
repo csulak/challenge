@@ -23,9 +23,9 @@ public class IpController {
     }
 
     @ApiOperation(value = "Limpia todas las caches de memoria")
-    @RequestMapping(value = "/internal/clearMemoryCache", method = RequestMethod.GET, produces = "application/json")
-    public Boolean clearCache() {
-        return true;
+    @RequestMapping(value = "/internal/clearMemoryCache", method = RequestMethod.POST, produces = "application/json")
+    public void clearCache() {
+        ipService.clearCache();
     }
 
 

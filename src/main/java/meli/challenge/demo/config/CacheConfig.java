@@ -23,6 +23,10 @@ import redis.clients.jedis.JedisPoolConfig;
 import java.util.Arrays;
 import java.util.Date;
 
+import static meli.challenge.demo.utils.Constants.COUNTRIES_INFO_MAP_CACHE;
+import static meli.challenge.demo.utils.Constants.COUNTRY_CODES_INFO_CACHE;
+import static meli.challenge.demo.utils.Constants.COUNTRY_EXCHANGE_RATE_CACHE;
+
 @Configuration
 @EnableCaching
 @EnableScheduling
@@ -44,10 +48,9 @@ public class CacheConfig {
     public CacheManager cacheManager() {
         SimpleCacheManager cacheManager = new SimpleCacheManager();
         cacheManager.setCaches(Arrays.asList(
-                new ConcurrentMapCache("countries-info-cache"),
-                new ConcurrentMapCache("country-codes-info-cache"),
-                new ConcurrentMapCache("country-exchange-rate-cache"),
-                new ConcurrentMapCache("countries-info-map-cache")));
+                new ConcurrentMapCache(COUNTRY_CODES_INFO_CACHE),
+                new ConcurrentMapCache(COUNTRY_EXCHANGE_RATE_CACHE),
+                new ConcurrentMapCache(COUNTRIES_INFO_MAP_CACHE)));
 
         return cacheManager;
     }
@@ -85,7 +88,7 @@ public class CacheConfig {
     }
 
 
-    @CacheEvict(allEntries = true, value = {"countries-info-cache"})
+    @CacheEvict(allEntries = true, value = {COUNTRY_CODES_INFO_CACHE, COUNTRY_EXCHANGE_RATE_CACHE, COUNTRIES_INFO_MAP_CACHE})
     @Scheduled(fixedDelay = TTL_IN_MINUTES * 60 * 1000 ,  initialDelay = 500)
     public void reportCacheEvict() {
         System.out.println("Flush Memory Cache " + new Date());

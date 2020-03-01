@@ -17,6 +17,9 @@ import java.net.http.HttpResponse.BodyHandlers;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 
+import static meli.challenge.demo.utils.Constants.COUNTRY_CODES_INFO_CACHE;
+import static meli.challenge.demo.utils.Constants.COUNTRY_EXCHANGE_RATE_CACHE;
+
 
 @Component
 public class CurrencyInfoRestClient {
@@ -43,7 +46,7 @@ public class CurrencyInfoRestClient {
      *
      * @return List<Country>
      */
-    @Cacheable("country-codes-info-cache")
+    @Cacheable(COUNTRY_CODES_INFO_CACHE)
     private CountryCodes AllcountryCodes() {
 
         String path = "/api/symbols";
@@ -76,7 +79,7 @@ public class CurrencyInfoRestClient {
      *
      * @return List<Country>
      */
-    @Cacheable("country-exchange-rate-cache")
+    @Cacheable(COUNTRY_EXCHANGE_RATE_CACHE)
     public CountryCodeExchangeRates getCountryCodeExchangeRates() {
 
         String path = "/api/latest";

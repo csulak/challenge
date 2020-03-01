@@ -19,6 +19,8 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
+import static meli.challenge.demo.utils.Constants.COUNTRIES_INFO_MAP_CACHE;
+
 
 @Component
 public class CountryInfoRestClient {
@@ -42,7 +44,7 @@ public class CountryInfoRestClient {
      *
      * @return Map<String,Country>
      */
-    @Cacheable("countries-info-map-cache")
+    @Cacheable(COUNTRIES_INFO_MAP_CACHE)
     public Map<String, Country> getAllCountriesInfoMap() {
 
         Map<String, Country> countriesInfoMap = new HashMap<>();
