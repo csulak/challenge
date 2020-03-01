@@ -8,7 +8,9 @@ Contenido:
 - [Desarrollo](#desarrollo)
 - [Setear entorno](#setear-entorno)
 
-**Enunciado**
+
+##enunciado
+
 Ejercicio de programación
 Para coordinar acciones de respuesta ante fraudes, es útil tener disponible información
 contextual del lugar de origen detectado en el momento de comprar, buscar y pagar. Para
@@ -52,7 +54,7 @@ Moneda: EUR (1 EUR = 1.0631 U$S)
 Hora: 20:01:23 (UTC) o 21:01:23 (UTC+01:00)
 Distancia estimada: 10270 kms (-34, -64) a (40, -4)
 
-**Swagger - Endpoints**
+##swagger-edpoints
 
 [Swagger](http://localhost:8080/challenge/swagger-ui.html#/)
 
@@ -64,7 +66,7 @@ Ingresando una IP valida retorna informacion del pais de procedencia, moneda, id
 Retorna estadisticas basada en las IP ingresadas.
 
 
-**Desarrollo**
+##desarrollo
 Proyecto desarrollado en Java 13, utilizando Spring Boot
 
 Por cada informacion consultada mediante la IP se persiste en SQL La IP que se ingreso, distancia de Buenos Aires (en cuanto a la ubicacion geografica de la IP).
@@ -75,7 +77,7 @@ La cache en memoria se "limpia" cada 5 minutos
 Se cachea en redis la informacion retornada en el endpoint "GET statistics". Si en el primer intento no lo encuentra en Redis lo busca en base para luego almacernarlo en Redis.
 La cache de Redis se "limpia" cada 15 minutos.
 
-**Setear entorno**
+##setear-entorno
 
 En intellij
 
