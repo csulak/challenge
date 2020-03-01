@@ -1,6 +1,13 @@
 
 # Challenge
 
+Contenido:
+
+- [Enunciado](#enunciado)
+- [Swagger - Endpoints](#swagger-edpoints)
+- [Desarrollo](#desarrollo)
+- [Setear entorno](#setear-entorno)
+
 **Enunciado**
 Ejercicio de programación
 Para coordinar acciones de respuesta ante fraudes, es útil tener disponible información
@@ -47,7 +54,8 @@ Distancia estimada: 10270 kms (-34, -64) a (40, -4)
 
 **Swagger - Endpoints**
 
-http://localhost:8080/challenge/swagger-ui.html#/
+[Swagger](http://localhost:8080/challenge/swagger-ui.html#/)
+
 
 - POST /api/country/info
 Ingresando una IP valida retorna informacion del pais de procedencia, moneda, idioma, etc
