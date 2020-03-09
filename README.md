@@ -109,3 +109,12 @@ En intellij
 - Program Arguments: --stacktrace
 - Use classpath or Module: demo.main
 - JRE: 13
+
+
+## Tip
+
+Los files de docker-compose, dockerfile, wait-for-it. deben tener la indentacion LF y NO CRLF. Esto tenerlo en cuenta porque sino falla
+
+- en intellij abajo a la derecha cada file muestra si es LF o CRLF tambien si es UTF, etc
+
+[Solucion](https://stackoverflow.com/questions/51508150/standard-init-linux-go190-exec-user-process-caused-no-such-file-or-directory)
