@@ -98,15 +98,22 @@ public class IpService {
     private List<CountryCurrency> getCountryCurrencies(List<Currency> countryInfoCurrency) {
 
         var exchangesRateInEuroComplete = currencyInfoRestClient.getCountryCodeExchangeRates().getRates();
-        List<CountryCurrency> countryCurrencies = new ArrayList<>();
+        //List<CountryCurrency> countryCurrencies = new ArrayList<>();
 
+
+        var countryCurrencies = countryInfoCurrency.stream().map(currency -> new CountryCurrency(
+                currency.getCode(),
+                currency.getName(),
+                exchangesRateInEuroComplete.getOrDefault(currency.getCode(), -1D))).collect(Collectors.toList());
+
+        /*
         countryInfoCurrency.forEach(currency ->
                 countryCurrencies.add(new CountryCurrency(
                         currency.getCode(),
                         currency.getName(),
                         exchangesRateInEuroComplete.getOrDefault(currency.getCode(), -1D))
                 ));
-
+*/
 
         return countryCurrencies;
     }
