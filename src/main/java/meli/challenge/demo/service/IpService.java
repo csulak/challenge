@@ -1,10 +1,10 @@
 package meli.challenge.demo.service;
 
 import meli.challenge.demo.model.CountryInfoComplete;
-import meli.challenge.demo.model.Statistics;
 import meli.challenge.demo.model.StatisticsDTO;
 import meli.challenge.demo.model.country.CountryCurrency;
 import meli.challenge.demo.model.country.Currency;
+import meli.challenge.demo.model.Statistics;
 import meli.challenge.demo.repository.StatisticsRepository;
 import meli.challenge.demo.rest.CountryInfoRestClient;
 import meli.challenge.demo.rest.CurrencyInfoRestClient;
@@ -17,12 +17,10 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
 
-import java.math.BigInteger;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
@@ -47,7 +45,7 @@ public class IpService {
     RedisTemplate<String, StatisticsDTO> redisTemplate;
 
     @Autowired
-    StatisticsRepository statisticsRepository;
+    private StatisticsRepository repository;
 
     public CountryInfoComplete countryInfoComplete(String ip) {
 
@@ -79,13 +77,13 @@ public class IpService {
                 distanceBetweenBuenosAiresToThisCountryInKm,
                 countryCurrencies);
 
-        // armamos el objeto a persistir
-        var statistics = new Statistics(ip, distanceBetweenBuenosAiresToThisCountryInKm);
 
-        //persistimos el objeto
-        statisticsRepository.save(statistics);
+        var statisticsMongo = new Statistics(ip, distanceBetweenBuenosAiresToThisCountryInKm);
 
-        // obtengo el objeto de redis y si no existe lo trae de sql
+
+        repository.save(statisticsMongo);
+
+        // obtengo el objeto de redis y si no existe lo trae de mongo
         var statisticsToRedis = this.getStatisticsObject(countryInfoComplete.getDistanceBetweenBuenosAiresToThisCountryInKm());
 
         //guardo el objeto en redis
@@ -145,9 +143,22 @@ public class IpService {
             Optional<StatisticsDTO> params = Optional.ofNullable(opsForValue.get("STATISTICS_REDIS"));
             if (params.isEmpty() || params.get().getMaxDistanceToBuenosAires() == null) {
 
-                params = Optional.ofNullable(statisticsRepository.averageDistanceToBuenosAires().stream()
-                        .map(this::convertToItem)
-                        .collect(Collectors.toList()).get(0));
+                // traigo de mongo todos los documentos que haya TODO esto se debe trabjar por query
+                var listBooks = repository.findAll();
+
+                // trabajo toda la info en memoria TODO esto se debe trabjar por query
+                var listNums = listBooks.stream().map( l -> l.getDistanceToBuenosAires()).collect(Collectors.toList());;
+
+                var minimo = listNums.stream().min(Double::compare);
+                var maximo = listNums.stream().max(Double::compare);
+                var quantity = listNums.size();
+                var avg = listNums.stream().mapToDouble(Double::doubleValue).sum() / quantity;
+
+                var satisticsDTO = new StatisticsDTO(avg, maximo.orElse(null), minimo.orElse(null), quantity);
+
+                params = Optional.of(satisticsDTO);
+
+                this.addStatisticsObjectToRedis(satisticsDTO);
 
             }
             else{
@@ -178,31 +189,30 @@ public class IpService {
     }
 
 
-    private StatisticsDTO convertToItem(Map<String, ?> item) {
-
-        var average = (Double) item.get("average");
-        var min = (Double) item.get("min");
-        var max = (Double) item.get("max");
-        var quantity = (BigInteger) item.get("quantity");
-
-        return new StatisticsDTO(average, max, min, quantity.intValue());
-    }
-
-
     public Optional<StatisticsDTO> getStatisticsObjectByEndpoint() {
         try {
             ValueOperations<String, StatisticsDTO> opsForValue = redisTemplate.opsForValue();
             Optional<StatisticsDTO> params = Optional.ofNullable(opsForValue.get("STATISTICS_REDIS"));
             if (params.isEmpty()) {
 
-                params = Optional.ofNullable(statisticsRepository.averageDistanceToBuenosAires().stream()
-                        .map(this::convertToItem)
-                        .collect(Collectors.toList()).get(0));
+                // traigo de mongo todos los documentos que haya TODO esto se debe trabjar por query
+                var listBooks = repository.findAll();
 
-                this.addStatisticsObjectToRedis(params.get());
+                // trabajo toda la info en memoria TODO esto se debe trabjar por query
+                var listNums = listBooks.stream().map( l -> l.getDistanceToBuenosAires()).collect(Collectors.toList());;
+
+                var minimo = listNums.stream().min(Double::compare);
+                var maximo = listNums.stream().max(Double::compare);
+                var quantity = listNums.size();
+                var avg = listNums.stream().mapToDouble(Double::doubleValue).sum() / quantity;
+
+                var satisticsDTO = new StatisticsDTO(avg, maximo.orElse(null), minimo.orElse(null), quantity);
+
+                params = Optional.of(satisticsDTO);
+
+                this.addStatisticsObjectToRedis(satisticsDTO);
 
             }
-
             return params;
         } catch (Exception e) {
             throw new RuntimeException("Error obteniendo statistics /", e);

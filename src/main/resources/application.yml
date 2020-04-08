@@ -15,14 +15,7 @@ spring.jackson.property-naming-strategy: SNAKE_CASE
 
 management.info.git.mode: full
 
-spring:
-  jpa:
-    show-sql: false
-    open-in-view: true
-    properties:
-      hibernate:
-        dialect: nl.topicus.hibernate.dialect.CloudSpannerDialect
-        temp.use_jdbc_metadata_defaults: false
+
 
 swagger:
   api:
@@ -51,24 +44,12 @@ redis:
   expiration: 300
 
 
+# MONGODB
+#spring.data.mongodb.uri: mongodb://localhost:27017/EmployeeDB
+spring.data.mongodb.host: api-database
+
+
 #Logging
 logging.description: true
 
-#spring.datasource.url: jdbc:mysql://localhost:3306/challenge_db
-spring.datasource.url: jdbc:mysql://db:3306/challenge_db
-
-#spring.datasource.username: root
-spring.datasource.username: db_user
-
-spring.datasource.password: 1234
-spring.datasource.testWhileIdle: true
-spring.datasource.validationQuery: SELECT 1
-spring.jpa.show-sql: true
-spring.jpa.hibernate.ddl-auto: create-drop
-spring.jpa.hibernate.naming-strategy: org.hibernate.cfg.ImprovedNamingStrategy
-spring.jpa.properties.hibernate.dialect: org.hibernate.dialect.MySQL57Dialect
-#org.hibernate.dialect.MySQL5Dialect
-#org.hibernate.dialect.MySQL55Dialect
-#org.hibernate.dialect.MySQL5InnoDBDialect
-spring.datasource.driver-class-name: com.mysql.jdbc.Driver
 

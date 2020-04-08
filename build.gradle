@@ -43,13 +43,11 @@ dependencies {
 		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
 	}
 	implementation 'javax.xml.bind:jaxb-api:2.3.0'
-	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-	implementation group: 'mysql', name: 'mysql-connector-java', version: '5.1.44'
 	//runtime('com.Oracle:ojdbc7:12.1.0.2.0')
 	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 	implementation 'redis.clients:jedis:2.9.0'
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'
-	
+	compile group: 'org.springframework.boot', name: 'spring-boot-starter-data-mongodb'
 	// Test
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testRuntime 'org.junit.vintage:junit-vintage-engine:5.4.0'

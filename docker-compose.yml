@@ -12,18 +12,17 @@ services:
     networks:
       - applicants
 
-  db:
-    image: mysql:5.7
+
+  mongo:
+    image: mongo:3.2.4
+    container_name: "api-database"
     restart: always
-    environment:
-      MYSQL_DATABASE: "challenge_db"
-      MYSQL_USER: "db_user"
-      MYSQL_PASSWORD: "1234"
-      MYSQL_ROOT_PASSWORD: "1234"
     networks:
       - applicants
     expose:
-      - 3306
+      - 27017
+    command: --smallfiles
+
 
   app:
     build: .
@@ -31,7 +30,7 @@ services:
       - 8080:8080
     depends_on:
       - redis
-      - db
+      - mongo
     networks:
       - applicants
 
