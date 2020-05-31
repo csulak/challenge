@@ -3,6 +3,7 @@ package meli.challenge.demo.controller;
 
 import io.swagger.annotations.ApiOperation;
 import meli.challenge.demo.model.CountryInfoComplete;
+import meli.challenge.demo.model.Statistics;
 import meli.challenge.demo.model.StatisticsDTO;
 import meli.challenge.demo.service.IpService;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api")
@@ -42,5 +45,9 @@ public class IpController {
         return ipService.countryInfoComplete(ip);
     }
 
-
+    @ApiOperation(value = "Retorna todas los country info de las ip persistidas")
+    @RequestMapping(value = "/ips/saved", method = RequestMethod.GET, produces = "application/json")
+    public List<Statistics> getipsSaved() {
+        return ipService.getStatisticsssObjectByEndpoint();
+    }
 }

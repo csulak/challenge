@@ -209,6 +209,13 @@ public class IpService {
         }
     }
 
+    public List<Statistics> getStatisticsssObjectByEndpoint() {
+        List<Statistics> resultList = new ArrayList<>();
+        statisticsRepository.findAll().forEach(resultList::add);
+
+        return resultList;
+    }
+
     /**
      * Metodo para limpiar todas las caches
      */
