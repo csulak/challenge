@@ -1,6 +1,11 @@
 
 # Challenge
 
+## Demo
+
+![Challenge - Animated gif demo](demo/demo.gif)
+
+
 Contenido:
 
 - [Enunciado](#enunciado)
