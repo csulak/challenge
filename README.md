@@ -116,10 +116,20 @@ En intellij
 - JRE: 13
 
 
-## Tip
+## Tips
 
 Los files de docker-compose, dockerfile, wait-for-it. deben tener la indentacion LF y NO CRLF. Esto tenerlo en cuenta porque sino falla
 
 - en intellij abajo a la derecha cada file muestra si es LF o CRLF tambien si es UTF, etc
 
 [Solucion](https://stackoverflow.com/questions/51508150/standard-init-linux-go190-exec-user-process-caused-no-such-file-or-directory)
+
+___________________________________________________________________________________________________________________________________
+
+Links Utiles:
+
+[Instalar Redis Linux](https://redis.io/topics/quickstart)
+
+[Instalar_SQL_Linux](https://www.youtube.com/watch?v=TG6WAnyeDRw)
+
+[Error login SQL on Java](https://es.stackoverflow.com/questions/326205/error-en-conexi%C3%B3n-mysql-y-java-unable-to-load-authentication-plugin-caching-sh)
