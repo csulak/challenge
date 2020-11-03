@@ -54,13 +54,21 @@ redis:
 #Logging
 logging.description: true
 
+#################################################################################
+#asi me funciona si lo levanto en windows
 #spring.datasource.url: jdbc:mysql://localhost:3306/challenge_db
+
+# asi me funciona si lo levanto en linux
+#spring.datasource.url: jdbc:mysql://localhost:3306/challenge_db?verifyServerCertificate=false&useSSL=false&requireSSL=false
+
+# asi para levantarlo con docker
 spring.datasource.url: jdbc:mysql://db:3306/challenge_db
+################################################################################
 
 #spring.datasource.username: root
 spring.datasource.username: db_user
 
-spring.datasource.password: 1234
+spring.datasource.password: Notebook123!
 spring.datasource.testWhileIdle: true
 spring.datasource.validationQuery: SELECT 1
 spring.jpa.show-sql: true
