@@ -15,15 +15,6 @@ spring.jackson.property-naming-strategy: SNAKE_CASE
 
 management.info.git.mode: full
 
-spring:
-  jpa:
-    show-sql: false
-    open-in-view: true
-    properties:
-      hibernate:
-        dialect: nl.topicus.hibernate.dialect.CloudSpannerDialect
-        temp.use_jdbc_metadata_defaults: false
-
 swagger:
   api:
     version: 1.0.0
@@ -54,29 +45,27 @@ redis:
 #Logging
 logging.description: true
 
-#################################################################################
-#asi me funciona si lo levanto en windows
-#spring.datasource.url: jdbc:mysql://localhost:3306/challenge_db
 
-# asi me funciona si lo levanto en linux
-#spring.datasource.url: jdbc:mysql://localhost:3306/challenge_db?verifyServerCertificate=false&useSSL=false&requireSSL=false
-
-# asi para levantarlo con docker
-spring.datasource.url: jdbc:mysql://db:3306/challenge_db
-################################################################################
-
-#spring.datasource.username: root
-spring.datasource.username: db_user
-
-spring.datasource.password: Notebook123!
-spring.datasource.testWhileIdle: true
-spring.datasource.validationQuery: SELECT 1
-spring.jpa.show-sql: true
-spring.jpa.hibernate.ddl-auto: create-drop
-spring.jpa.hibernate.naming-strategy: org.hibernate.cfg.ImprovedNamingStrategy
-spring.jpa.properties.hibernate.dialect: org.hibernate.dialect.MySQL57Dialect
-#org.hibernate.dialect.MySQL5Dialect
-#org.hibernate.dialect.MySQL55Dialect
-#org.hibernate.dialect.MySQL5InnoDBDialect
-spring.datasource.driver-class-name: com.mysql.jdbc.Driver
-
+spring:
+  jpa:
+    show-sql: true
+    open-in-view: true
+    hibernate:
+      ddl-auto: create-drop
+      naming-strategy: org.hibernate.cfg.ImprovedNamingStrategy
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL57Dialect
+        temp.use_jdbc_metadata_defaults: false
+  datasource:
+    #***asi me funciona si lo levanto en windows***
+    #url: jdbc:mysql://localhost:3306/challenge_db
+    #***asi me funciona si lo levanto en linux***
+    #url: jdbc:mysql://localhost:3306/challenge_db?verifyServerCertificate=false&useSSL=false&requireSSL=false
+    #***asi para levantarlo con docker***
+    url: jdbc:mysql://db:3306/challenge_db?verifyServerCertificate=false&useSSL=false&requireSSL=false
+    username: db_user
+    password: Notebook123!
+    driver-class-name: com.mysql.jdbc.Driver
+    testWhileIdle: true
+    validationQuery: SELECT 1
