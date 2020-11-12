@@ -1,0 +1,49 @@
+redis-server para levantar de forma local redis
+
+=================================================================
+JUGANDO CON DOCKER
+
+COMANDOS BASICOS:
+docker ps -> ver los containers de docker corriendo
+docker images -> ver las imagenes de docker
+docker stop <name> -> frena la imagen levantada
+docker rm <name> -> elimina una imagen especifica
+
+
+levanta una imagen de mysql (configurar a piachere passwd, nombre, etc)
+docker run --name=root --env="MYSQL_ROOT_PASSWORD=Notebook123!" --env="MYSQL_PASSWORD=Notebook123!" --env="MYSQL_DATABASE=challenge-db" mysql
+
+
+gradle clean build -> correrlo para armar el .jar
+
+docker build -f Dockerfile -t app .  -> (incluido el punto) buildea una imagen de docker
+
+docker run -t --name app --link root:mysql -p 8080:8080 app -> corre la app y le linkea mysql para que se comuniquen, tenes
+ que confirmar mediante "docker ps" que ya esta levantada la imagen de mysql
+
+
+Esto me funciono sin usar docker-compose. el dockerfile para este ejemplo es el siguiente
+
+FROM openjdk:13-jdk-alpine
+VOLUME /tmp
+EXPOSE 8080
+ADD /build/libs/demo-0.0.1-SNAPSHOT.jar app.jar
+ENTRYPOINT ["java","-jar","app.jar"]
+
+
+
+================================================================
+
+dockerfile para usar con docker-compose
+
+
+FROM openjdk:13-jdk-alpine
+
+ENV APP_HOME=/usr/app/
+WORKDIR $APP_HOME
+RUN apk add --no-cache bash
+COPY ./build/libs/* ./app.jar
+COPY ./wait-for-it.sh ./wait-for-it.sh
+EXPOSE 8080
+RUN chmod +x wait-for-it.sh
+CMD ["./wait-for-it.sh", "db:3306", "--", "java","-jar","app.jar"]

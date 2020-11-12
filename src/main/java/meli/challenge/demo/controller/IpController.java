@@ -31,6 +31,11 @@ public class IpController {
         ipService.clearCache();
     }
 
+    @ApiOperation(value = "Retorna un Hello World! :D")
+    @RequestMapping(value = "/hello", method = RequestMethod.GET)
+    public String helloWorld() {
+        return "Hello World!";
+    }
 
     @ApiOperation(value = "Retorna las estadisticas")
     @RequestMapping(value = "/statistics", method = RequestMethod.GET, produces = "application/json")

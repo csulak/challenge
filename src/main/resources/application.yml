@@ -36,7 +36,9 @@ countryInfo:
 
 
 redis:
+  ###***VALUE TO RUN ON LOCAL MODE***
   #host: localhost
+  ###***VALUE TO RUN ON DOCKER MODE***
   host: redis
   port: 6379
   expiration: 300
@@ -58,13 +60,15 @@ spring:
         dialect: org.hibernate.dialect.MySQL57Dialect
         temp.use_jdbc_metadata_defaults: false
   datasource:
-    #***asi me funciona si lo levanto en windows***
+    ###***VALUE TO RUN WITH WINDOWS LOCAL***
     #url: jdbc:mysql://localhost:3306/challenge_db
-    #***asi me funciona si lo levanto en linux***
+    ###***VALUE TO RUN WITH LINUX LOCAL***
     #url: jdbc:mysql://localhost:3306/challenge_db?verifyServerCertificate=false&useSSL=false&requireSSL=false
-    #***asi para levantarlo con docker***
-    url: jdbc:mysql://db:3306/challenge_db?verifyServerCertificate=false&useSSL=false&requireSSL=false
-    username: db_user
+    ###***VALUE TO RUN WITH DOCKER***
+    #url: jdbc:mysql://mysql:3306/challenge-db?verifyServerCertificate=false&useSSL=false&requireSSL=false&allowPublicKeyRetrieval=true
+    ###***VALUE TO RUN WITH DOCKER-COMPOSE***
+    url: jdbc:mysql://db:3306/challenge_db
+    username: root
     password: Notebook123!
     driver-class-name: com.mysql.jdbc.Driver
     testWhileIdle: true
