@@ -49,16 +49,16 @@ logging.description: true
 
 
 spring:
+  profiles:
+    active: gcp,mysql
   jpa:
     show-sql: true
     open-in-view: true
+    generate-ddl: true
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: update
       naming-strategy: org.hibernate.cfg.ImprovedNamingStrategy
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.MySQL57Dialect
-        temp.use_jdbc_metadata_defaults: false
   datasource:
     ###***VALUE TO RUN WITH WINDOWS LOCAL***
     #url: jdbc:mysql://localhost:3306/challenge_db
@@ -67,9 +67,14 @@ spring:
     ###***VALUE TO RUN WITH DOCKER***
     #url: jdbc:mysql://mysql:3306/challenge-db?verifyServerCertificate=false&useSSL=false&requireSSL=false&allowPublicKeyRetrieval=true
     ###***VALUE TO RUN WITH DOCKER-COMPOSE***
-    url: jdbc:mysql://db:3306/challenge_db
-    username: root
-    password: Notebook123!
-    driver-class-name: com.mysql.jdbc.Driver
+    #url: jdbc:mysql://db:3306/challenge_db
+    ###***VALUE TO RUN WITH GOOGLE CLOUD RUN***
+    url: jdbc:mysql://google/challenge?cloudSqlInstance=cloud-run-294818:us-central1:challenge-db&socketFactory=com.google.cloud.sql.mysql.SocketFactory
+    #username: root
+    #password: Notebook123!
+    password: ${SECRETS_PASSWORD:Notebook123!}
+    username: ${SECRETS_USER:root}
+    initialization-mode: always
+    driverClassName: com.mysql.jdbc.Driver
     testWhileIdle: true
     validationQuery: SELECT 1

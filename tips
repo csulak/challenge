@@ -47,3 +47,169 @@ COPY ./wait-for-it.sh ./wait-for-it.sh
 EXPOSE 8080
 RUN chmod +x wait-for-it.sh
 CMD ["./wait-for-it.sh", "db:3306", "--", "java","-jar","app.jar"]
+
+
+docker build -t demo-docker .
+
+
+==================================================================
+
+
+logre buildear y correr la imagen en GCP haciendo esto:
+
+
+dockerfile usado
+
+FROM gradle:6.7.0-jdk11 AS build
+COPY --chown=gradle:gradle . /home/gradle/src
+WORKDIR /home/gradle/src
+RUN gradle build --no-daemon
+FROM adoptopenjdk/openjdk13:alpine-slim
+EXPOSE 8080
+RUN mkdir /app
+COPY --from=build /home/gradle/src/build/libs/*.jar /app/demo-docker-0.0.1-SNAPSHOT.jar
+ENTRYPOINT ["java", "-jar", "/app/demo-docker-0.0.1-SNAPSHOT.jar"]
+
+**************
+
+en build.gradle comente la libreria del framework JPA
+	//implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+por ende tuve que eliminar/comentar todito lo relacion a jpa en el codigo
+corri las sentencias
+
+>> gradle clean build
+
+>> gcloud builds submit --tag gcr.io/cloud-run-294818/app
+
+>> gcloud run deploy --image gcr.io/cloud-run-294818/app --platform managed
+
+y listo!
+
+para probar el mismo Dockerfile pero sin subirlo a GCP correr
+
+>> docker build -f Dockerfile -t app . (incluido el punto)
+
+>> docker run -p 8080:8080 app
+
+=================================================================
+
+GOOGLE CLOUD RUN + CLOUD SQL (MySQL)
+
+Archivos con la siguiente informacion
+__________________________________________________________
+Dockerfile:
+FROM gradle:6.7.0-jdk11 AS build
+COPY --chown=gradle:gradle . /home/gradle/src
+WORKDIR /home/gradle/src
+RUN gradle build --no-daemon
+FROM adoptopenjdk/openjdk13:alpine-slim
+EXPOSE 8080
+RUN mkdir /app
+COPY --from=build /home/gradle/src/build/libs/*.jar /app/demo-docker-0.0.1-SNAPSHOT.jar
+ENTRYPOINT ["java", "-jar","-Dspring.profiles.active=dev", "/app/demo-docker-0.0.1-SNAPSHOT.jar"]
+
+__________________________________________________________
+(Este va a la misma altura que el application.yml)
+application-gcp.yml:
+spring:
+    cloud:
+        gcp:
+            sql:
+                enabled: true
+                database-type: mysql
+                database-name: challenge
+                instance-connection-name: cloud-run-294818:us-central1:challenge-db
+____________________________________________________________
+
+application.yml:
+name: moba-api-integrator
+
+server:
+  port: 8080
+  servlet.context-path: /challenge
+
+management:
+  health.defaults.enabled: false
+  endpoints:
+    web:
+      exposure:
+        include: info,metrics,health
+
+spring.jackson.property-naming-strategy: SNAKE_CASE
+
+management.info.git.mode: full
+
+swagger:
+  api:
+    version: 1.0.0
+
+
+# Fixer
+fixer:
+  baseUrl: http://data.fixer.io
+  key: 32dcecc71324943b43693a4523ade931
+
+
+# Ip Info
+ipInfo:
+  baseUrl: https://api.ip2country.info/
+
+# Country Info
+countryInfo:
+  baseUrl: https://restcountries.eu
+
+
+redis:
+  ###***VALUE TO RUN ON LOCAL MODE***
+  #host: localhost
+  ###***VALUE TO RUN ON DOCKER MODE***
+  host: redis
+  port: 6379
+  expiration: 300
+
+
+#Logging
+logging.description: true
+
+
+spring:
+  profiles:
+    active: gcp,mysql
+  jpa:
+    show-sql: true
+    open-in-view: true
+    generate-ddl: true
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    hibernate:
+      ddl-auto: update
+      naming-strategy: org.hibernate.cfg.ImprovedNamingStrategy
+  datasource:
+    ###***VALUE TO RUN WITH WINDOWS LOCAL***
+    #url: jdbc:mysql://localhost:3306/challenge_db
+    ###***VALUE TO RUN WITH LINUX LOCAL***
+    #url: jdbc:mysql://localhost:3306/challenge_db?verifyServerCertificate=false&useSSL=false&requireSSL=false
+    ###***VALUE TO RUN WITH DOCKER***
+    #url: jdbc:mysql://mysql:3306/challenge-db?verifyServerCertificate=false&useSSL=false&requireSSL=false&allowPublicKeyRetrieval=true
+    ###***VALUE TO RUN WITH DOCKER-COMPOSE***
+    #url: jdbc:mysql://db:3306/challenge_db
+    ###***VALUE TO RUN WITH GOOGLE CLOUD RUN***
+    url: jdbc:mysql://google/challenge?cloudSqlInstance=cloud-run-294818:us-central1:challenge-db&socketFactory=com.google.cloud.sql.mysql.SocketFactory
+    #username: root
+    #password: Notebook123!
+    password: ${SECRETS_PASSWORD:Notebook123!}
+    username: ${SECRETS_USER:root}
+    initialization-mode: always
+    driverClassName: com.mysql.jdbc.Driver
+    testWhileIdle: true
+    validationQuery: SELECT 1
+
+_____________________________________________________________________________________________
+crear una instancia de una bd de SQL en GCP
+
+>>gradle clean build
+>>docker build . -t gcr.io/cloud-run-294818/challenge
+>>docker push gcr.io/cloud-run-294818/challenge
+
+ir a cloud run y elegir esa imagen que acabamos de crear
+
+ver video explicativo

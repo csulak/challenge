@@ -1,10 +1,9 @@
-FROM openjdk:13-jdk-alpine
-
-ENV APP_HOME=/usr/app/
-WORKDIR $APP_HOME
-RUN apk add --no-cache bash
-COPY ./build/libs/* ./app.jar
-COPY ./wait-for-it.sh ./wait-for-it.sh
+FROM gradle:6.7.0-jdk11 AS build
+COPY --chown=gradle:gradle . /home/gradle/src
+WORKDIR /home/gradle/src
+RUN gradle build --no-daemon
+FROM adoptopenjdk/openjdk13:alpine-slim
 EXPOSE 8080
-RUN chmod +x wait-for-it.sh
-CMD ["./wait-for-it.sh", "db:3306", "--", "java","-jar","app.jar"]
+RUN mkdir /app
+COPY --from=build /home/gradle/src/build/libs/*.jar /app/demo-docker-0.0.1-SNAPSHOT.jar
+ENTRYPOINT ["java", "-jar","-Dspring.profiles.active=dev", "/app/demo-docker-0.0.1-SNAPSHOT.jar"]

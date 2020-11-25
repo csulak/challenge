@@ -1,0 +1,8 @@
+spring:
+    cloud:
+        gcp:
+            sql:
+                enabled: true
+                database-type: mysql
+                database-name: challenge
+                instance-connection-name: cloud-run-294818:us-central1:challenge-db

@@ -43,8 +43,8 @@ public class IpService {
     @Autowired
     CurrencyInfoRestClient currencyInfoRestClient;
 
-    @Autowired
-    RedisTemplate<String, StatisticsDTO> redisTemplate;
+    //@Autowired
+    //RedisTemplate<String, StatisticsDTO> redisTemplate;
 
     @Autowired
     StatisticsRepository statisticsRepository;
@@ -89,7 +89,7 @@ public class IpService {
         var statisticsToRedis = this.getStatisticsObject(countryInfoComplete.getDistanceBetweenBuenosAiresToThisCountryInKm());
 
         //guardo el objeto en redis
-        this.addStatisticsObjectToRedis(statisticsToRedis.get());
+        //this.addStatisticsObjectToRedis(statisticsToRedis.get());
 
         return countryInfoComplete;
     }
@@ -129,7 +129,7 @@ public class IpService {
         return currentTimes;
     }
 
-
+/*
     private void addStatisticsObjectToRedis(StatisticsDTO params) {
         try {
             ValueOperations<String, StatisticsDTO> opsForValue = redisTemplate.opsForValue();
@@ -137,27 +137,27 @@ public class IpService {
         } catch (Exception e) {
         }
     }
-
+*/
 
     private Optional<StatisticsDTO> getStatisticsObject(Double distanceBetweenBuenosAiresToThisCountryInKm) {
         try {
-            ValueOperations<String, StatisticsDTO> opsForValue = redisTemplate.opsForValue();
-            Optional<StatisticsDTO> params = Optional.ofNullable(opsForValue.get("STATISTICS_REDIS"));
-            if (params.isEmpty() || params.get().getMaxDistanceToBuenosAires() == null) {
+            //ValueOperations<String, StatisticsDTO> opsForValue = redisTemplate.opsForValue();
+            //Optional<StatisticsDTO> params = Optional.ofNullable(opsForValue.get("STATISTICS_REDIS"));
+            //if (params.isEmpty() || params.get().getMaxDistanceToBuenosAires() == null) {
 
-                params = Optional.ofNullable(statisticsRepository.averageDistanceToBuenosAires().stream()
+                var params = Optional.ofNullable(statisticsRepository.averageDistanceToBuenosAires().stream()
                         .map(this::convertToItem)
                         .collect(Collectors.toList()).get(0));
 
-            }
-            else{
+            //}
+            //else{
 
                 // aca actualizo los valores del objeto de redis. esto lo hago en el caso de que ya exista en redis
                 // porque los valores van a ser "viejos" por estar cacheados y no "nuevos" por ser traidos de sql
-                var statisticsUpdated = this.updateStatistics(params.get(), distanceBetweenBuenosAiresToThisCountryInKm);
-                params = Optional.of(statisticsUpdated);
+              //  var statisticsUpdated = this.updateStatistics(params.get(), distanceBetweenBuenosAiresToThisCountryInKm);
+              //  params = Optional.of(statisticsUpdated);
 
-            }
+            //}
 
             return params;
         } catch (Exception e) {
@@ -191,17 +191,17 @@ public class IpService {
 
     public Optional<StatisticsDTO> getStatisticsObjectByEndpoint() {
         try {
-            ValueOperations<String, StatisticsDTO> opsForValue = redisTemplate.opsForValue();
-            Optional<StatisticsDTO> params = Optional.ofNullable(opsForValue.get("STATISTICS_REDIS"));
-            if (params.isEmpty()) {
+            //ValueOperations<String, StatisticsDTO> opsForValue = redisTemplate.opsForValue();
+            //Optional<StatisticsDTO> params = Optional.ofNullable(opsForValue.get("STATISTICS_REDIS"));
+            //if (params.isEmpty()) {
 
-                params = Optional.ofNullable(statisticsRepository.averageDistanceToBuenosAires().stream()
+                var params = Optional.ofNullable(statisticsRepository.averageDistanceToBuenosAires().stream()
                         .map(this::convertToItem)
                         .collect(Collectors.toList()).get(0));
 
-                this.addStatisticsObjectToRedis(params.get());
+                //this.addStatisticsObjectToRedis(params.get());
 
-            }
+            //}
 
             return params;
         } catch (Exception e) {
