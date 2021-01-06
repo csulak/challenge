@@ -7,7 +7,9 @@ COMANDOS BASICOS:
 docker ps -> ver los containers de docker corriendo
 docker images -> ver las imagenes de docker
 docker stop <name> -> frena la imagen levantada
-docker rm <name> -> elimina una imagen especifica
+docker rm <name> -> elimina un container especifico
+docker rm $(docker ps -aq) -> elimina todos los containers
+docker rmi $(docker images -aq) -f -> elimina todas las imagenes descargadas (la f es para forzar en caso de que alguna se este usando)
 
 
 levanta una imagen de mysql (configurar a piachere passwd, nombre, etc)
