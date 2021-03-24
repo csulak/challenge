@@ -102,6 +102,9 @@ Puertos usados: 8080 (Proyecto), 6379 (Redis), 3306(MySQL)
 
 las configuracion de puertos y propias del proyecto se encuentran en el application.yml
 
+Tambien a modo de continuar aprendiendo nuevas tecnologías desarrollé un front básico para consumir este back
+[Front Web(React Js)](https://github.com/csulak/challenge-react)
+
 ## Setear Entorno
 
 En intellij
