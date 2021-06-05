@@ -9,6 +9,7 @@
 Contenido:
 
 - [Enunciado](#enunciado)
+- [Versiones](#versiones)
 - [Correr Proyecto](#correr-proyecto)
 - [Swagger Endpoints](#swagger-endpoints)
 - [Desarrollo](#desarrollo)
@@ -60,6 +61,12 @@ Moneda: EUR (1 EUR = 1.0631 U$S)
 Hora: 20:01:23 (UTC) o 21:01:23 (UTC+01:00)
 Distancia estimada: 10270 kms (-34, -64) a (40, -4)
 
+
+## Versiones
+
+| Gradle | Docker-compose | Docker | Java |
+|---|---|---|---|
+| 6.3 | 1.29.1 | 20.10.6 | 13 |
 
 ## Correr Proyecto
 
@@ -136,3 +143,7 @@ Links Utiles:
 [Instalar_SQL_Linux](https://www.youtube.com/watch?v=TG6WAnyeDRw)
 
 [Error login SQL on Java](https://es.stackoverflow.com/questions/326205/error-en-conexi%C3%B3n-mysql-y-java-unable-to-load-authentication-plugin-caching-sh)
+
+[Instalar_SQL_Mac](https://flaviocopes.com/mysql-how-to-install/)
+
+[Instalar_Java_Mac](https://sdkman.io/usage)
