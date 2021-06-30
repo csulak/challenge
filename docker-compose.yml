@@ -4,7 +4,8 @@ version: "3.3"
 
 services:
   redis:
-    image: redis:3.0.6
+    #platform: linux/x86_64
+    image: redis:6.2.4
     ports:
       - "6379:6379"
     expose:
@@ -13,7 +14,9 @@ services:
       - applicants
 
   db:
-    image: mysql:5.7
+    #platform: linux/x86_64
+    #image: mysql:5.7
+    image: mariadb:10.5.8
     restart: always
     environment:
       MYSQL_DATABASE: "challenge_db"

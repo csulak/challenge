@@ -1,8 +1,8 @@
-FROM openjdk:13-jdk-alpine
+FROM arm64v8/openjdk:11
 
 ENV APP_HOME=/usr/app/
 WORKDIR $APP_HOME
-RUN apk add --no-cache bash
+#RUN apk add --no-cache bash
 COPY ./build/libs/* ./app.jar
 COPY ./wait-for-it.sh ./wait-for-it.sh
 EXPOSE 8080
