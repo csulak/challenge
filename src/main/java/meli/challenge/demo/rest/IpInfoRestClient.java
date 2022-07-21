@@ -22,6 +22,12 @@ public class IpInfoRestClient {
     @Value("${ipInfo.baseUrl}")
     private String baseUrl;
 
+    @Value("${ipInfo.access_key}")
+    private String access_key;
+
+    @Value("${ipInfo.format}")
+    private String format;
+
     private HttpClient client;
     private ObjectMapper mapper = new ObjectMapper();
 
@@ -40,8 +46,11 @@ public class IpInfoRestClient {
      */
     public IpInfoDTO ipInfo(String ip) {
 
+        // TODO move this outside in order to avoid on each new call make a new instance of uri. SAME LOGIC AS countryInfoRestClient
         URI uri = UrlBuilder.empty()
-                .fromString(baseUrl + "ip?" + ip)
+                .fromString(baseUrl + ip)
+                .addParameter("access_key", access_key)
+                .addParameter("format", format)
                 .toUri();
 
         try {
@@ -56,7 +65,7 @@ public class IpInfoRestClient {
                 throw new Exception("Respuesta invalida - response code " + response.statusCode());
             }
 
-            return new ObjectMapper().readValue(response.body(), IpInfoDTO.class);
+            return mapper.readValue(response.body(), IpInfoDTO.class);
         } catch (Exception e) {
             throw new RuntimeException("Error obteniendo info de la ip /" + ip , e);
         }

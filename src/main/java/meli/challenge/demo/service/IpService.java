@@ -58,7 +58,7 @@ public class IpService {
         var ipInfo = ipInfoRestClient.ipInfo(ip);
         var countriesInfoMap = countryInfoRestClient.getAllCountriesInfoMap();
 
-        var countryInfo = countriesInfoMap.get(ipInfo.getCountryCode3());
+        var countryInfo = countriesInfoMap.get(ipInfo.getCountryCode());
 
         LocalDateTime localDateTimeInUTC = LocalDateTime.now();
 

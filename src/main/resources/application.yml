@@ -28,12 +28,13 @@ fixer:
 
 # Ip Info
 ipInfo:
-  baseUrl: https://api.ip2country.info/
+  baseUrl: http://api.ipapi.com/
+  access_key: 3d892bff21212c5beb3c423340530ab0
+  format: 1
 
 # Country Info
 countryInfo:
   baseUrl: https://restcountries.eu
-
 
 redis:
   ###***VALUE TO RUN ON LOCAL MODE***

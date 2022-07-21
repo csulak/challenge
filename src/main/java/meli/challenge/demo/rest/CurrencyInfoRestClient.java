@@ -47,7 +47,7 @@ public class CurrencyInfoRestClient {
      * @return List<Country>
      */
     @Cacheable(COUNTRY_CODES_INFO_CACHE)
-    private CountryCodes AllcountryCodes() {
+    public CountryCodes AllcountryCodes() {
 
         String path = "/api/symbols";
 
